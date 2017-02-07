@@ -88,38 +88,41 @@ def ship_size(data, cell):
         print('Wrong coordinate. Must be from 1 to 10.')
         return None
     size = 0
-    if data[y][x+1] != ' ':
+
+    if str(data[y][x+1]) in 'X*':
         for i in range(x, 11):
-            if data[y][i] != ' ':
+            if str(data[y][i]) in 'X*':
                 size += 1
             elif data[y][i] == ' ':
                 break
-    if data[y][x-1] != ' ':
+    elif str(data[y][x-1]) in 'X*':
         if size == 0:
             x = x
         else:
             x = x - 1
         for i in range(x, 1, -1):
-            if data[y][i] != ' ':
+            if str(data[y][i]) in 'X*':
                 size += 1
-            elif data[y][i] == ' ':
+            elif str(data[y][i]) == ' ':
                 break
-    if data[y+1][x] != ' ':
+    elif str(data[y+1][x]) in 'X*':
         for j in range(y, 11):
-            if data[j][x] != ' ':
+            if str(data[j][x]) in 'X*':
                 size += 1
             elif data[j][x] == ' ':
                 break
-    if data[y-1][x] != ' ':
+    elif str(data[y-1][x]) in 'X*':
         if size == 0:
             y = y
         else:
             y = y - 1
         for j in range(y, 1, -1):
-            if data[j][x] != ' ':
+            if str(data[j][x]) in 'X*':
                 size += 1
-            elif data[j][x] == ' ':
+            elif str(data[j][x]) in 'X*':
                 break
+    if str(data[y][x]) in '*X':
+        size+=1
     return size
 
 
@@ -136,7 +139,28 @@ def is_valid(data):
     three = 0
     two = 0
     one = 0
-
+    letres = 'ABCDEFGHIJ'
+    for i in range(1, 11):
+        for j in range(1, 11):
+            if str(data[i][j]) == '*' and str(data[i+1][j+1]) in 'X*' and str(data[i+1][j-1]) in 'X*' and str(data[i-1][j+1]) in 'X*' and str(data[i-1][j-1]) in 'X*':
+                print('i =', i, 'j = ', j)
+                print('data[', i+1, '][', j+1, '] = ', data[i+1][j+1], '|', data[i+1][j+1] not in 'X*')
+                print('data[', i + 1, '][', j - 1, '] = ', data[i + 1][j - 1], '|', data[i+1][j-1] not in 'X*')
+                print('data[', i - 1, '][', j + 1, '] = ', data[i - 1][j + 1], '|', data[i-1][j+1] not in 'X*')
+                print('data[', i - 1, '][', j - 1, '] = ', data[i - 1][j - 1], '|', data[i-1][j-1] not in 'X*')
+                return False
+    for i in range(1, 11):
+        for j in range(1, 11):
+            s = ship_size(data, (letres[i-1], j-1))
+            if s == 4:
+                four += 1
+            elif s == 3:
+                three += 1
+            elif s == 2:
+                two += 1
+            elif s == 1:
+                one += 1
+    '''
     def horizontal_check(one, two, three, four):
         """
         (int, int, int, int) -> ()
@@ -145,19 +169,19 @@ def is_valid(data):
         """
         for i in range(1, 11):
             for j in range(1, 11):
-                if data[i][j] == '*' and data[i+1][j] not in '*X' and data[i-1][j] not in '*X' and data[i][j+1] not in '*X' and data[i][j-1] not in '*X':
+                if str(data[i][j]) == '*' and str(data[i+1][j]) not in '*X' and str(data[i-1][j]) not in '*X' and str(data[i][j+1]) not in '*X' and str(data[i][j-1]) not in '*X':
                     one += 1
             for j in range(1, 8):
                 ship = ''.join(data[i][j:j + 4])
-                if ship == ' ** ' and '*' not in  ''.join(data[i - 1][j:j + 4]) and '*' not in ''.join(data[i + 1][j:j + 4]):
+                if ship == ' ** ' and '*' not in  ''.join(str(data[i - 1][j:j + 4])) and '*' not in ''.join(str(data[i + 1][j:j + 4])):
                     two += 1
             for j in range(1, 7):
                 ship = ''.join(data[i][j:j + 5])
-                if ship == ' *** ' and '*' not in ''.join(data[i - 1][j:j + 5]) and '*' not in  ''.join(data[i + 1][j:j + 5]):
+                if ship == ' *** ' and '*' not in ''.join(str(data[i - 1][j:j + 5])) and '*' not in  ''.join(str(data[i + 1][j:j + 5])):
                     three += 1
             for j in range(1, 6):
                 ship = ''.join(data[i][j:j + 6])
-                if ship == ' **** ' and '*' not in  ''.join(data[i - 1][j:j + 6]) and '*' not in ''.join(data[i + 1][j:j + 6]):
+                if ship == ' **** ' and '*' not in  ''.join(str(data[i - 1][j:j + 6])) and '*' not in ''.join(str(data[i + 1][j:j + 6])):
                     four += 1
         return one, two, three, four
 
@@ -167,8 +191,8 @@ def is_valid(data):
     data.append([' '] * 12)
     one, two, three, four = horizontal_check(one, two, three, four)
     one = one // 2
-
-    if four == 1 and three == 2 and two == 3 and one == 4:
+    '''
+    if four == 4 and three == 6 and two == 6 and one == 4:
         return True
     else:
         print(one, two, three, four)
@@ -206,6 +230,9 @@ def generate_field():
         field[i].insert(11, '|')
     field.append(['-'] * 12)
 
+        
+
+    '''
     def putHorizontally(field, size):
         """
         (list(list), int) -> (field)
@@ -225,7 +252,8 @@ def generate_field():
                 y = random.randint(1, 10)
             for i in range(x, x + size):
                 if field[y][i] == '*':
-                    pass
+                    k=0
+                    break
                 else:
                     k += 1
         field[y][x - 1] = '#'
@@ -238,10 +266,10 @@ def generate_field():
             field[y - 1][i] = '#'
             field[y][i] = '*'
         field[y][x + size] = '#'
-        if field[y-1][x + size] != '*':
-            field[y-1][x + size] = '#'
-        if field[y+1][x + size]  != '*':
-            field[y+1][x + size] = '#'
+        #if field[y-1][x + size] != '*':
+        #    field[y-1][x + size] = '#'
+        #if field[y+1][x + size]  != '*':
+        #    field[y+1][x + size] = '#'
         return field
 
 
@@ -264,7 +292,8 @@ def generate_field():
                 x = random.randint(1, 10)
             for i in range(y, y + size):
                 if field[i][x] == '*':
-                    pass
+                    k=0
+                    break
                 else:
                     k += 1
         field[y-1][x] = '#'
@@ -311,6 +340,7 @@ def generate_field():
         for j in range(1, 11):
             if i[j] == '#':
                 i[j] = ' '
+    '''
     field[0] = top
     for j in range(1, 11):
         field[j][0] = j
@@ -321,11 +351,17 @@ def generate_field():
 
 print()
 table = generate_field()
-while(not is_valid(table)):
-    table = generate_field()
-    for i in table:
-        print(i)
-for i in table:
-    print(i)
+#print(is_valid(table))
+#while(not is_valid(table)):
+#    print()
+#    table = generate_field()
+#    for i in table:
+#        print(i)
 
-print(field_to_str(table))
+#for i in table:
+#    print(i)
+print('info')
+print(is_valid(read_field('field.txt')))
+print(ship_size(read_field('field.txt'), ('B', 4)))
+
+#print(field_to_str(table))
