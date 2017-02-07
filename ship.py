@@ -5,7 +5,7 @@ def ship_size(data, cell):
     """
     (data, tuple) -> (tuple)
 
-    Checks the ship size on the cell.
+    Returns the size of the ship with its coordinates.
 
     e.g. cell: ('C', 1)
     """
@@ -73,6 +73,7 @@ def has_ship(data, coords):
     (data, tuple) -> (bool)
 
     Checks if there is a ship on the field on the given coordinates.
+    Return bool value - True if ship exist, or False otherwise.
 
     e.g. coords: ('C', 1)
     """
