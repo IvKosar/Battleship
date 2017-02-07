@@ -1,18 +1,22 @@
 import random
-from field_tools import *
+from field.field_tools import *
+
 
 def read_field(filename):
     """
-    (str) -> (data)
+    (str) -> (dict)
 
     Reads a field for the battleship game.
-
+    Returns the dict of coords with values:
+    ' ' if there is free cell,
+    '*' if there is a ship,
+    'X' if there is a damaged ship.
     """
     if type(filename) != str:
         print("Filename must be a string")
         return None
     result = {}
-    status = {' ' : False, '*' : True, 'X': 'damaged'}
+    status = {' ': False, '*': True, 'X': 'damaged'}
     with open(filename, 'r') as file:
         data = file.readlines()
     for line in range(1, 11):
@@ -32,7 +36,7 @@ def read_field(filename):
 
 def putShip(data, size, rotation):
     """
-    (dict, int, int, int, int) -> dict
+    (dict, int, int, int, int) -> (dict)
     Put a ship of given size on the position with rotation.
     """
     if type(data) != dict:
@@ -59,17 +63,17 @@ def putShip(data, size, rotation):
     if rotation == 0:
         while can != size:
             can = 0
-            while data[x, y] != False:
+            while data[x, y]:
                 # tmp = random.choice(freeCoords)
                 # x = tmp[0]
                 # y = tmp[1]
                 x = random.randint(1, 11)
                 y = random.randint(1, 11)
             for i in range(0, size):
-                if data[x + i, y] == False or data[x + i + 1][y + 1] == False or data[x + i + 1][y - 1] == False or \
-                                data[x + i - 1][y + 1] == False or data[x + i - 1][y - 1] == False:
+                if not data[x + i, y] or not data[x + i + 1][y + 1] or not data[x + i + 1][y - 1] or \
+                                not data[x + i - 1][y + 1] or not data[x + i - 1][y - 1]:
                     can += 1
-                elif data[x + i, y] == None:
+                elif data[x + i, y] is None:
                     can = 0
                     # tmp = random.choice(freeCoords)
                     # x = tmp[0]
@@ -82,17 +86,17 @@ def putShip(data, size, rotation):
     elif rotation == 1:
         while can != size:
             can = 0
-            while data[x, y] != False:
+            while data[x, y]:
                 # tmp = random.choice(freeCoords)
                 # x = tmp[0]
                 # y = tmp[1]
                 x = random.randint(1, 11)
                 y = random.randint(1, 11)
             for i in range(0, size):
-                if data[x, y + 1] == False or data[x + 1][y + 1 + i] == False or data[x + 1][y - 1 + i] == False or \
-                                data[x - 1][y + 1 + i] == False or data[x - 1][y - 1 + i] == False:
+                if not data[x, y + 1] or not data[x + 1][y + 1 + i] or not data[x + 1][y - 1 + i] or \
+                                not data[x - 1][y + 1 + i] or not data[x - 1][y - 1 + i]:
                     can += 1
-                elif data[x, y + i] == None:
+                elif data[x, y + i] is None:
                     can = 0
                     # tmp = random.choice(freeCoords)
                     # x = tmp[0]
@@ -109,12 +113,12 @@ def generate_field():
     """
     () -> (data)
 
-    Generates a field for the battleship game.
+    Generates a field (not always valid) for the battleship game.
     """
     done = 1
     while done:
         try:
-            #print('start')
+            # print('start')
             result = {}
 
             for i in range(1, 11):
@@ -131,7 +135,7 @@ def generate_field():
                 result[(-1, i)] = None
                 result[(i, -1)] = None
 
-            #print(' continue ')
+            # print(' continue ')
             result = putShip(result, 4, random.randint(0, 1))
             result = putShip(result, 3, random.randint(0, 1))
             result = putShip(result, 3, random.randint(0, 1))

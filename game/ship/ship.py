@@ -1,9 +1,9 @@
-from create_field import *
+from field.create_field import *
 
 
 def ship_size(data, cell):
     """
-    (data, tuple) -> (tuple)
+    (dict, tuple) -> (tuple)
 
     Returns the size of the ship with its coordinates.
 
@@ -66,11 +66,9 @@ def ship_size(data, cell):
     return (size, coords)
 
 
-
-
 def has_ship(data, coords):
     """
-    (data, tuple) -> (bool)
+    (dict, tuple) -> (bool)
 
     Checks if there is a ship on the field on the given coordinates.
     Return bool value - True if ship exist, or False otherwise.

@@ -1,8 +1,9 @@
-from ship import *
+from ship.ship import *
+
 
 def is_valid(data):
     """
-    (data) -> (bool)
+    (dict) -> (bool)
 
     Checks if the field of the battleship game is valid.
     """
@@ -36,17 +37,12 @@ def is_valid(data):
     four = four // 4
     if one != 4 or two != 3 or three != 2 or four != 1:
         return False
-
-
-
     return True
-
-
 
 
 def field_to_str(data):
     """
-    (data) -> (str)
+    (dict) -> (str)
 
     Converts a field into string,
     so it can be written to the file or printed on the display.
@@ -59,11 +55,11 @@ def field_to_str(data):
     for x in range(1, 11):
         for y in range(1, 11):
             el = data[(y, x)]
-            if el == True:
+            if el:
                 field += '*'
-            elif el == False:
+            elif not el:
                 field += ' '
-            elif el =='damaged':
+            elif el == 'damaged':
                 field += 'X'
         field += '\n'
     return field
