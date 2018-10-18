@@ -24,11 +24,12 @@ def is_valid(data):
                 for k in coords:
                     if data[(k[0]-1, k[1]+1)] or data[(k[0]-1, k[1]+1)] == 'damaged' or data[(k[0]-1, k[1]-1)] or data[(k[0]-1, k[1]-1)] == 'damaged' or data[(k[0]+1, k[1]+1)] or data[(k[0]+1, k[1]+1)] == 'damaged' or data[(k[0]+1, k[1]-1)] or data[(k[0]+1, k[1]-1)] == 'damaged':
                         return False
-    two = two // 2
-    three = three // 3
-    four = four // 4
-    if one != 4 or two != 3 or three != 2 or four != 1:
-        return False
+    
+    ships_number_by_types = list(map(lambda x: x//(ships_number_by_types.index(x)+1),ships_number_by_types ))
+    
+    for i in range(len(ships_number_by_types)):
+        if ships_number_by_types[i] != i+1:
+            return False
     return True
 
 
