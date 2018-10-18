@@ -10,10 +10,8 @@ def is_valid(data):
     if type(data) != dict:
         print('Wrong argument data')
         return None
-    four = 0
-    three = 0
-    two = 0
-    one = 0
+    number_of_ship_types = 4
+    ships_number_by_types = [0 for _ in range(number_of_ship_types)]
     abc = 'ABCDEFGHIJ'
     for i in range(1, 11):
         for j in range(1, 11):
@@ -21,14 +19,8 @@ def is_valid(data):
             if type(el) == tuple:
                 coords = el[1]
                 el = el[0]
-                if el == 1:
-                    one += 1
-                elif el == 2:
-                    two += 1
-                elif el == 3:
-                    three += 1
-                elif el == 4:
-                    four += 1
+                cur = ships_number_by_types[el-1]
+                ships_number_by_types[el-1] = cur + 1
                 for k in coords:
                     if data[(k[0]-1, k[1]+1)] or data[(k[0]-1, k[1]+1)] == 'damaged' or data[(k[0]-1, k[1]-1)] or data[(k[0]-1, k[1]-1)] == 'damaged' or data[(k[0]+1, k[1]+1)] or data[(k[0]+1, k[1]+1)] == 'damaged' or data[(k[0]+1, k[1]-1)] or data[(k[0]+1, k[1]-1)] == 'damaged':
                         return False
